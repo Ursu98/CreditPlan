@@ -5,11 +5,8 @@
     </div>
     <div class="tip-credit padding">
       <span> Tipul creditului:</span>
-      <select v-model="selected" class="width-input">
-        <option></option>
-        <option>Credit Acum</option>
-        <option>Credit Prima Casa</option>
-        <option>Credit de nevoi fara gaj</option>
+      <select class="width-input">
+        <option v-for="item in list" :value="item"> {{ item }}</option>
       </select>
     </div>
     <div class="date padding">
@@ -52,8 +49,29 @@ export default {
   components: {Datepicker},
   data() {
     return {
-      selected: '',
-      date: null
+      list: [
+        '',
+        'Credit Acum',
+        'Credit Prima Casă',
+        'Credit de nevoi personale fără gaj',
+        'Credit de nevoi personale fără gaj (preferențial)',
+        'Credit de nevoi personale cu gaj',
+        'Credit de nevoi personale cu gaj (preferențial)',
+        'Credit IMOBILIAR de achiziție',
+        'Credit IMOBILIAR de achiziție (preferențial)',
+        'Overdraft pe card salarial Basic',
+        'Overdraft pe card salarial Silver',
+        'Overdraft pe card salarial GOLD',
+        'Card de credit Basic',
+        'Card de credit Silver',
+        'Card de credit GOLD',
+        'Card de credit Basic (preferențial)',
+        'Card de credit Silver (preferențial)',
+        'Card de credit GOLD (preferențial)',
+        'SmartCredit Basic',
+        'SmartCredit GOLD'
+      ],
+      date: null,
     };
   },
 };
@@ -61,5 +79,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

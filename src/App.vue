@@ -1,11 +1,10 @@
 <template>
   <div>
-<basic-form/>
-
+    <basic-form/>
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import basicForm from "@/components/BasicForm.vue";
 
 export default {
