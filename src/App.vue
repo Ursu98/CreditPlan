@@ -1,12 +1,17 @@
 <template>
   <div>
-    HELLO
+<basic-form/>
+
   </div>
 </template>
 
-<script lang="ts">
-export default {
+<script>
+import basicForm from "@/components/BasicForm.vue";
 
+export default {
+  components: {
+    basicForm
+  }
 }
 </script>
 
