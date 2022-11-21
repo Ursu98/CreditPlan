@@ -13,27 +13,29 @@
 
     <div class="date padding">
       <span>Data primirei creditului</span>
-      <Datepicker v-model="data.date" class="date-picker width-input"></Datepicker>
+      <Datepicker v-model="data.selectDate" class="date-picker width-input"></Datepicker>
     </div>
 
     <div class="padding">
       <span> Suma, lei:</span>
       <input
+          onchange="this.value"
           v-model="data.sumaLei"
           type="text"
           class="width-input"
       />
     </div>
     <div class="padding">
-      <span> Preioada luni:</span>
-      <select class="width-input"></select>
+      <span> Perioada luni:</span>
+      <select class="width-input" v-model="data.perioadaLuni"></select>
     </div>
     <div class="padding">
       <span> Ziua platii:</span>
-      <select class="width-input"></select>
+      <select class="width-input" v-model="data.ziuaPlatii"></select>
     </div>
     <div class="padding">
       <span> Rata anuala a dobanzii, % </span>
+      <span class="procentaj">%%%</span>
     </div>
     <div class="btn-div">
       <button class="btn">Calculeaza</button>
@@ -96,11 +98,13 @@ export default {
         {value: "SmartCredit Basic"},
         {value: "SmartCredit GOLD"},
       ],
+
       data: {
         selectCredit: "-",
-        date: null,
+        selectDate: null,
         sumaLei: null,
-        luni: null,
+        perioadaLuni: null,
+        ziuaPlatii: null,
       },
     };
   },
@@ -115,22 +119,26 @@ export default {
   },
 }
 </script>
-
 <style scoped>
 h2 {
   display: flex;
   justify-content: center;
+  font-size: 14px;
+  padding-bottom: 35px;
 }
 
 .form {
   color: #244f8e;
-  border: 1px solid #000;
-  width: 40rem;
+  border: 1px solid #abaaaa;
+  width: 37rem;
   height: auto;
+  font-size: 12px;
+  font-weight: 700;
+  padding-top: 15px;
 }
 
 .padding {
-  padding: 10px 15px;
+  padding: 15px 40px;
   display: flex;
   justify-content: space-between;
 }
@@ -141,13 +149,14 @@ h2 {
 }
 
 .width-input {
-  width: 15rem;
+  width: 17rem;
 }
 
 .btn-div {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 40px;
 }
 
 .btn {
@@ -157,5 +166,12 @@ h2 {
   border-radius: 3px;
   padding: 6px 0;
   width: 163px;
+}
+
+.line {
+  width: 800px;
+  height: 1px;
+  background-color: #abaaaa;
+  margin-top: 50px;
 }
 </style>
