@@ -10,8 +10,8 @@ import basicForm from "@/components/BasicForm.vue";
 export default {
   components: {
     basicForm
-  }
-}
+  },
+};
 </script>
 
 <style scoped>
