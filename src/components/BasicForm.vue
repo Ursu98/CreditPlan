@@ -36,12 +36,13 @@
     <div class="padding">
       <span> Rata anuala a dobanzii, % </span>
       <span class="procentaj">%%%</span>
+
     </div>
     <div class="btn-div">
-      <button class="btn">Calculeaza</button>
+      <button class="btn">Calculează</button>
     </div>
   </form>
-  <hr/>
+  <div class="line"></div>
 </template>
 
 <script lang="ts">
@@ -167,7 +168,6 @@ h2 {
   padding: 6px 0;
   width: 163px;
 }
-
 .line {
   width: 800px;
   height: 1px;
