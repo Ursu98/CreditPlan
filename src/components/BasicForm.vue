@@ -13,13 +13,12 @@
 
     <div class="date padding">
       <span>Data primirei creditului</span>
-      <input type="date" v-model="data.selectDate" class="date-picker width-input">
+      <input type="date" class=" width-input">
     </div>
 
     <div class="padding">
       <span> Suma, lei:</span>
       <input
-          v-if="data.selectCredit !== '-'"
           v-model="list[data.selectedCardIndex]['sum_max']"
           type="text"
           class="width-input"
@@ -28,8 +27,7 @@
     <div class="padding">
       <span> Perioada luni:</span>
       <select
-          class="width-input"
-          v-if="data.selectCredit !== '-'">
+          class="width-input">
         <option>
           {{ list[data.selectedCardIndex]['duration_max_m'] }}
         </option>
@@ -38,7 +36,7 @@
     <div class="padding">
       <span> Ziua platii:</span>
       <select class="width-input"
-              v-if="data.selectCredit !== '-'">
+      >
         <option>
           {{ list[data.selectedCardIndex]['pay_day_min'] }}
         </option>
@@ -46,27 +44,78 @@
     </div>
     <div class="padding">
       <span> Rata anuala a dobanzii, % </span>
-      <span class="procentaj" v-if="data.selectCredit !== '-'">
+      <span class="procentaj">
         {{ list[data.selectedCardIndex]['rate_p'] }} %
       </span>
     </div>
     <div class="btn-div">
-      <button class="btn">Calculează</button>
+      <button class="btn" type="button" @click="calcule">Calculează</button>
     </div>
   </form>
   <div class="line"></div>
+  <!--  ----------------------------------------------------------------------------------->
+  <table v-if="hidden" class="scheme2">
+    <tr>
+      <th>Luna</th>
+      <th>Data</th>
+      <th>Sold credit</th>
+      <th>Rata lunară</th>
+      <th>Creditul rambursat</th>
+      <th>Credit rămas</th>
+      <th>Comision de examinare</th>
+      <th>Comision de acordare</th>
+      <th>Comision de administrare</th>
+      <th>Dobânda</th>
+      <th>Plata lunară</th>
+    </tr>
+    <tr class="template">
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+  </table>
+
+
+  <table class="scheme2-full">
+    <tbody></tbody>
+  </table>
+
+
+  <div id="note-container">
+    <div style="width:300px;">
+      <p class="details-text" style="width:600px;"><span>Costul total al creditului, %:</span><span id="dae"></span>
+      </p>
+    </div>
+    <div>
+      <p class="note">Calculele prezentate sunt valabile până la următoarea modificare a ratei dobânzii şi sunt
+        efectuate din ipoteza că suma totală a creditului este acordată imediat şi în întregime, valoarea totală a
+        creditului se consideră a fi achitată în întregime, conform graficului din contract. În cazul achitării
+        anticipate calculele se vor modifica.</p>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
 import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
+import { defineComponent } from "vue";
 
-export default {
+
+export default defineComponent( {
   components: {
     Datepicker
   },
-  data: function () {
+  data() {
     return {
+      hidden: false,
       list: [
         {value: "-"},
         {
@@ -249,7 +298,6 @@ export default {
         {value: "SmartCredit Basic"},
         {value: "SmartCredit GOLD"},
       ],
-
       data: {
         selectCredit: "-",
         selectDate: null,
@@ -259,6 +307,14 @@ export default {
         selectedCardIndex: 0,
       },
     };
+  },
+  methods: {
+    calcule() {
+      console.log(123)
+      this.hidden = !this.hidden;
+      // const table = document.querySelector(".scheme2")
+      // table.classList.toggle("hiden")
+    }
   },
   watch: {
     data: {
@@ -271,7 +327,7 @@ export default {
       deep: true
     },
   },
-}
+})
 </script>
 <style scoped>
 h2 {
@@ -321,10 +377,61 @@ h2 {
   padding: 6px 0;
   width: 163px;
 }
+
 .line {
   width: 800px;
   height: 1px;
   background-color: #abaaaa;
   margin-top: 50px;
 }
+
+
+.hidden {
+  display: none;
+}
+
+table {
+  color: #333;
+  font-size: 12px;
+  width: 800px;
+  border-spacing: 0px;
+  border-left: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  margin-left: 10px;
+}
+
+tr {
+  margin: 0;
+  padding: 0;
+}
+
+td {
+  border-right: 1px solid #ccc;
+  padding: 7px;
+  border-top: 1px solid #ccc;
+  margin: 0;
+}
+
+th {
+  font-weight: bold;
+  border-right: 1px solid #ccc;
+  padding: 7px;
+  border-top: 1px solid #ccc;
+}
+
+.note {
+  margin-top: 20px;
+  color: #777;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  font-size-adjust: none;
+  font-stretch: normal;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  line-height: normal;
+  padding: 1px 1px 1px 2px;
+  width: 500px;
+}
+
 </style>
