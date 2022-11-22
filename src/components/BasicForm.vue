@@ -49,7 +49,6 @@
       <span class="procentaj" v-if="data.selectCredit !== '-'">
         {{ list[data.selectedCardIndex]['rate_p'] }} %
       </span>
-
     </div>
     <div class="btn-div">
       <button class="btn">Calculează</button>
@@ -322,7 +321,6 @@ h2 {
   padding: 6px 0;
   width: 163px;
 }
-
 .line {
   width: 800px;
   height: 1px;
