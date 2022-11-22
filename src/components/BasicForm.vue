@@ -13,30 +13,42 @@
 
     <div class="date padding">
       <span>Data primirei creditului</span>
-      <Datepicker v-model="data.selectDate" class="date-picker width-input"></Datepicker>
+      <input type="date" v-model="data.selectDate" class="date-picker width-input">
     </div>
 
     <div class="padding">
       <span> Suma, lei:</span>
       <input
-          onchange="this.value"
-          v-model="data.sumaLei"
+          v-if="data.selectCredit !== '-'"
+          v-model="list[data.selectedCardIndex]['sum_max']"
           type="text"
           class="width-input"
-      />
+      >
     </div>
     <div class="padding">
       <span> Perioada luni:</span>
-      <select class="width-input" v-model="data.perioadaLuni"></select>
+      <select
+          class="width-input"
+          v-if="data.selectCredit !== '-'">
+        <option>
+          {{ list[data.selectedCardIndex]['duration_max_m'] }}
+        </option>
+      </select>
     </div>
     <div class="padding">
       <span> Ziua platii:</span>
-      <select class="width-input" v-model="data.ziuaPlatii"></select>
+      <select class="width-input"
+              v-if="data.selectCredit !== '-'">
+        <option>
+          {{ list[data.selectedCardIndex]['pay_day_min'] }}
+        </option>
+      </select>
     </div>
     <div class="padding">
       <span> Rata anuala a dobanzii, % </span>
-      <span class="procentaj">%%%</span>
-
+      <span class="procentaj" v-if="data.selectCredit !== '-'">
+        {{ list[data.selectedCardIndex]['rate_p'] }} %
+      </span>
     </div>
     <div class="btn-div">
       <button class="btn">Calculează</button>
@@ -55,8 +67,6 @@ export default {
   },
   data: function () {
     return {
-      // selectCredit: 0,
-      // date: null,
       list: [
         {value: "-"},
         {
@@ -80,13 +90,153 @@ export default {
           pay_day_min: 2,
           pay_day_max: 27,
         },
-        {value: "Credit Prima Casă"},
-        {value: "Credit de nevoi personale fără gaj"},
-        {value: "Credit de nevoi personale fără gaj (preferențial)"},
-        {value: "Credit de nevoi personale cu gaj"},
-        {value: "Credit de nevoi personale cu gaj (preferențial)"},
-        {value: "Credit IMOBILIAR de achiziție"},
-        {value: "Credit IMOBILIAR de achiziție (preferențial)"},
+        {
+          value: "Credit Prima Casă",
+          "rate_p": 12.72,
+          "currency": "MDL",
+          "commission_exam": 0,
+          "commission_accord_p": 1,
+          "commission_accord_min": 0,
+          "commission_usage_p": 0,
+          "commission_administration_m_p": 0,
+          "interval_free": 0,
+          "interval_passive": 0,
+          "month_free_mandatory_p": "",
+          "duration_min_m": 1,
+          "duration_max_m": 120,
+          "duration_list": 0,
+          "sum_max": 850000,
+          "sum_min": 100000,
+          "sum_step": 1,
+          "pay_day_min": 2,
+          "pay_day_max": 27
+        },
+        {
+          value: "Credit de nevoi personale fără gaj",
+          "rate_p": 15.9,
+          "currency": "MDL",
+          "commission_exam": 0,
+          "commission_accord_p": 0,
+          "commission_accord_min": 0,
+          "commission_usage_p": 0,
+          "commission_administration_m_p": 0,
+          "interval_free": 0,
+          "interval_passive": 0,
+          "month_free_mandatory_p": "",
+          "duration_min_m": 1,
+          "duration_max_m": 60,
+          "duration_list": 0,
+          "sum_max": 400000,
+          "sum_min": 5000,
+          "sum_step": 1000,
+          "pay_day_min": 2,
+          "pay_day_max": 27
+        },
+        {
+          value: "Credit de nevoi personale fără gaj (preferențial)",
+          "rate_p": 14.9,
+          "currency": "MDL",
+          "commission_exam": 0,
+          "commission_accord_p": 0,
+          "commission_accord_min": 0,
+          "commission_usage_p": 0,
+          "commission_administration_m_p": 0,
+          "interval_free": 0,
+          "interval_passive": 0,
+          "month_free_mandatory_p": "",
+          "duration_min_m": 1,
+          "duration_max_m": 60,
+          "duration_list": 0,
+          "sum_max": 400000,
+          "sum_min": 5000,
+          "sum_step": 1000,
+          "pay_day_min": 2,
+          "pay_day_max": 27
+        },
+        {
+          value: "Credit de nevoi personale cu gaj",
+          "rate_p": 17.5,
+          "currency": "MDL",
+          "commission_exam": 0,
+          "commission_accord_p": 0,
+          "commission_accord_min": 0,
+          "commission_usage_p": 0,
+          "commission_administration_m_p": 0.20,
+          "interval_free": 0,
+          "interval_passive": 0,
+          "month_free_mandatory_p": "",
+          "duration_min_m": 13,
+          "duration_max_m": 60,
+          "duration_list": 0,
+          "sum_max": 2500000,
+          "sum_min": 51000,
+          "sum_step": 1,
+          "pay_day_min": 2,
+          "pay_day_max": 27
+        },
+        {
+          value: "Credit de nevoi personale cu gaj (preferențial)",
+          "rate_p": 17.0,
+          "currency": "MDL",
+          "commission_exam": 0,
+          "commission_accord_p": 0,
+          "commission_accord_min": 0,
+          "commission_usage_p": 0,
+          "commission_administration_m_p": 0.20,
+          "interval_free": 0,
+          "interval_passive": 0,
+          "month_free_mandatory_p": "",
+          "duration_min_m": 13,
+          "duration_max_m": 60,
+          "duration_list": 0,
+          "sum_max": 2500000,
+          "sum_min": 51000,
+          "sum_step": 1,
+          "pay_day_min": 2,
+          "pay_day_max": 27
+        },
+        {
+          value: "Credit IMOBILIAR de achiziție",
+          "rate_p": 13.5,
+          "currency": "MDL",
+          "commission_exam": 0,
+          "commission_accord_p": 0,
+          "commission_accord_min": 0,
+          "commission_usage_p": 0,
+          "commission_administration_m_p": 0,
+          "interval_free": 0,
+          "interval_passive": 0,
+          "month_free_mandatory_p": "",
+          "duration_min_m": 1,
+          "duration_max_m": 240,
+          "duration_list": 0,
+          "sum_max": 2500000,
+          "sum_min": 51000,
+          "sum_step": 1,
+          "pay_day_min": 2,
+          "pay_day_max": 27
+        },
+        {
+          value: "Credit IMOBILIAR de achiziție (preferențial)",
+          "rate_p": 13,
+          "currency": "MDL",
+          "commission_exam": 0,
+          "commission_accord_p": 0,
+          "commission_accord_min": 0,
+          "commission_usage_p": 0,
+          "commission_administration_m_p": 0,
+          "interval_free": 0,
+          "interval_passive": 0,
+          "month_free_mandatory_p": "",
+          "duration_min_m": 1,
+          "duration_max_m": 360,
+          "duration_list": 0,
+          "sum_max": 2500000,
+          "sum_min": 10000,
+          "sum_step": 1,
+          "pay_day_min": 2,
+          "pay_day_max": 27
+        },
         {value: "Overdraft pe card salarial Basic"},
         {value: "Overdraft pe card salarial Silver"},
         {value: "Overdraft pe card salarial GOLD"},
@@ -106,6 +256,7 @@ export default {
         sumaLei: null,
         perioadaLuni: null,
         ziuaPlatii: null,
+        selectedCardIndex: 0,
       },
     };
   },
@@ -114,6 +265,8 @@ export default {
       handler(newValue: any) {
         console.log(123, JSON.parse(JSON.stringify(newValue)));
         console.log('zashel brat', newValue.selectCredit);
+        this.data.selectedCardIndex = this.list.findIndex((item: any) =>
+            item.value === JSON.parse(JSON.stringify(newValue.selectCredit)))
       },
       deep: true
     },
