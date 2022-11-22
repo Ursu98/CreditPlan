@@ -68,8 +68,6 @@ export default {
   },
   data: function () {
     return {
-      // selectCredit: 0,
-      // date: null,
       list: [
         {value: "-"},
         {
