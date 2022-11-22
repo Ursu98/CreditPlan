@@ -12,41 +12,43 @@
     </div>
 
     <div class="date padding">
-      <span>Data primirei creditului</span>
+      <span>Data primirii creditului</span>
       <input type="date" v-model="data.selectDate" class="date-picker width-input">
     </div>
 
     <div class="padding">
       <span> Suma, lei:</span>
+      <div class="column">
+      {{ list[data.selectedCardIndex].sum_min }} - {{ list[data.selectedCardIndex].sum_max }} {{ list[data.selectedCardIndex].currency }}
       <input
-          v-if="data.selectCredit !== '-'"
           v-model="list[data.selectedCardIndex]['sum_max']"
           type="text"
           class="width-input"
       >
+      </div>
     </div>
     <div class="padding">
-      <span> Perioada luni:</span>
+      <span> Perioada, luni:</span>
       <select
           class="width-input"
-          v-if="data.selectCredit !== '-'">
+      >
         <option>
           {{ list[data.selectedCardIndex]['duration_max_m'] }}
         </option>
       </select>
     </div>
     <div class="padding">
-      <span> Ziua platii:</span>
+      <span> Ziua plății:</span>
       <select class="width-input"
-              v-if="data.selectCredit !== '-'">
+      >
         <option>
           {{ list[data.selectedCardIndex]['pay_day_min'] }}
         </option>
       </select>
     </div>
     <div class="padding">
-      <span> Rata anuala a dobanzii, % </span>
-      <span class="procentaj" v-if="data.selectCredit !== '-'">
+      <span> Rata anuală a dobânzii, % </span>
+      <span class="procentaj">
         {{ list[data.selectedCardIndex]['rate_p'] }} %
       </span>
     </div>
@@ -237,21 +239,241 @@ export default {
           "pay_day_min": 2,
           "pay_day_max": 27
         },
-        {value: "Overdraft pe card salarial Basic"},
-        {value: "Overdraft pe card salarial Silver"},
-        {value: "Overdraft pe card salarial GOLD"},
-        {value: "Card de credit Basic"},
-        {value: "Card de credit Silver"},
-        {value: "Card de credit GOLD"},
-        {value: "Card de credit Basic (preferențial)"},
-        {value: "Card de credit Silver (preferențial)"},
-        {value: "Card de credit GOLD (preferențial)"},
-        {value: "SmartCredit Basic"},
-        {value: "SmartCredit GOLD"},
+        {
+          value: "Overdraft pe card salarial Basic",
+          "rate_p": 17.0,
+          "currency": "MDL",
+          "commission_exam": 0,
+          "commission_accord_p": 1,
+          "commission_accord_min": 0,
+          "commission_usage_p": 0,
+          "commission_administration_m_p": 0,
+          "interval_free": 0,
+          "interval_passive": 20,
+          "month_free_mandatory_p": "",
+          "duration_min_m": 21,
+          "duration_max_m": 30,
+          "duration_list": 0,
+          "sum_max": 400000,
+          "sum_min": 1,
+          "sum_step": 1,
+          "pay_day_min": 10,
+          "pay_day_max": 15
+        },
+        {
+          value: "Overdraft pe card salarial Silver",
+          "rate_p": 16.0,
+          "currency": "MDL",
+          "commission_exam": 0,
+          "commission_accord_p": 1,
+          "commission_accord_min": 0,
+          "commission_usage_p": 0,
+          "commission_administration_m_p": 0,
+          "interval_free": 0,
+          "interval_passive": 20,
+          "month_free_mandatory_p": "",
+          "duration_min_m": 21,
+          "duration_max_m": 30,
+          "duration_list": 0,
+          "sum_max": 400000,
+          "sum_min": 1,
+          "sum_step": 1,
+          "pay_day_min": 10,
+          "pay_day_max": 15
+        },
+        {
+          value: "Overdraft pe card salarial GOLD",
+          "rate_p": 15.0,
+          "currency": "MDL",
+          "commission_exam": 0,
+          "commission_accord_p": 1,
+          "commission_accord_min": 0,
+          "commission_usage_p": 0,
+          "commission_administration_m_p": 0,
+          "interval_free": 0,
+          "interval_passive": 20,
+          "month_free_mandatory_p": "",
+          "duration_min_m": 21,
+          "duration_max_m": 30,
+          "duration_list": 0,
+          "sum_max": 400000,
+          "sum_min": 1,
+          "sum_step": 1,
+          "pay_day_min": 10,
+          "pay_day_max": 15
+        },
+        {
+          value: "Card de credit Basic",
+          "rate_p": 16,
+          "currency": "MDL",
+          "commission_exam": 0,
+          "commission_accord_p": 0,
+          "commission_accord_min": 0,
+          "commission_usage_p": 2,
+          "commission_administration_m_p": 0,
+          "interval_free": 30,
+          "interval_passive": 20,
+          "month_free_mandatory_p": 5,
+          "duration_min_m": 1,
+          "duration_max_m": 60,
+          "duration_list": 0,
+          "sum_max": 400000,
+          "sum_min": 5000,
+          "sum_step": 1000,
+          "pay_day_min": 10,
+          "pay_day_max": 15
+        },
+        {
+          value: "Card de credit Silver",
+          "rate_p": 15.5,
+          "currency": "MDL",
+          "commission_exam": 0,
+          "commission_accord_p": 0,
+          "commission_accord_min": 0,
+          "commission_usage_p": 2,
+          "commission_administration_m_p": 0,
+          "interval_free": 45,
+          "interval_passive": 20,
+          "month_free_mandatory_p": 5,
+          "duration_min_m": 1,
+          "duration_max_m": 60,
+          "duration_list": 0,
+          "sum_max": 400000,
+          "sum_min": 5000,
+          "sum_step": 1000,
+          "pay_day_min": 10,
+          "pay_day_max": 15
+        },
+        {
+          value: "Card de credit GOLD",
+          "rate_p": 14.5,
+          "currency": "MDL",
+          "commission_exam": 0,
+          "commission_accord_p": 0,
+          "commission_accord_min": 0,
+          "commission_usage_p": 2,
+          "commission_administration_m_p": 0,
+          "interval_free": 60,
+          "interval_passive": 20,
+          "month_free_mandatory_p": 5,
+          "duration_min_m": 1,
+          "duration_max_m": 60,
+          "duration_list": 0,
+          "sum_max": 400000,
+          "sum_min": 5000,
+          "sum_step": 1000,
+          "pay_day_min": 10,
+          "pay_day_max": 15
+        },
+        {
+          value: "Card de credit Basic (preferențial)",
+          "rate_p": 15.5,
+          "currency": "MDL",
+          "commission_exam": 0,
+          "commission_accord_p": 0,
+          "commission_accord_min": 0,
+          "commission_usage_p": 1.9,
+          "commission_administration_m_p": 0,
+          "interval_free": 30,
+          "interval_passive": 20,
+          "month_free_mandatory_p": 5,
+          "duration_min_m": 1,
+          "duration_max_m": 60,
+          "duration_list": 0,
+          "sum_max": 400000,
+          "sum_min": 5000,
+          "sum_step": 1000,
+          "pay_day_min": 10,
+          "pay_day_max": 15
+        },
+        {
+          value: "Card de credit Silver (preferențial)",
+          "rate_p": 15,
+          "currency": "MDL",
+          "commission_exam": 0,
+          "commission_accord_p": 0,
+          "commission_accord_min": 0,
+          "commission_usage_p": 1.9,
+          "commission_administration_m_p": 0,
+          "interval_free": 45,
+          "interval_passive": 20,
+          "month_free_mandatory_p": 5,
+          "duration_min_m": 1,
+          "duration_max_m": 60,
+          "duration_list": 0,
+          "sum_max": 400000,
+          "sum_min": 5000,
+          "sum_step": 1000,
+          "pay_day_min": 10,
+          "pay_day_max": 15
+        },
+        {
+          value: "Card de credit GOLD (preferențial)",
+          "rate_p": 14,
+          "currency": "MDL",
+          "commission_exam": 0,
+          "commission_accord_p": 0,
+          "commission_accord_min": 0,
+          "commission_usage_p": 1.9,
+          "commission_administration_m_p": 0,
+          "interval_free": 60,
+          "interval_passive": 20,
+          "month_free_mandatory_p": 5,
+          "duration_min_m": 1,
+          "duration_max_m": 60,
+          "duration_list": 0,
+          "sum_max": 400000,
+          "sum_min": 5000,
+          "sum_step": 1000,
+          "pay_day_min": 10,
+          "pay_day_max": 15
+        },
+        {
+          value: "SmartCredit Basic",
+          "rate_p": 0,
+          "currency": "MDL",
+          "commission_exam": 0,
+          "commission_accord_p": 1,
+          "commission_accord_min": 0,
+          "commission_usage_p": 0,
+          "commission_administration_m_p": 0.65,
+          "interval_free": 0,
+          "interval_passive": 0,
+          "month_free_mandatory_p": "",
+          "duration_min_m": 12,
+          "duration_max_m": 24,
+          "duration_list": "12,24",
+          "sum_max": 200000,
+          "sum_min": 5000,
+          "sum_step": 1,
+          "pay_day_min": 2,
+          "pay_day_max": 27
+        },
+        {
+          value: "SmartCredit GOLD",
+          "rate_p": 0,
+          "currency": "MDL",
+          "commission_exam": 0,
+          "commission_accord_p": 0,
+          "commission_accord_min": 0,
+          "commission_usage_p": 0,
+          "commission_administration_m_p": 0,
+          "interval_free": 0,
+          "interval_passive": 0,
+          "month_free_mandatory_p": "",
+          "duration_min_m": 12,
+          "duration_max_m": 24,
+          "duration_list": "12,24",
+          "sum_max": 200000,
+          "sum_min": 5000,
+          "sum_step": 1,
+          "pay_day_min": 2,
+          "pay_day_max": 27
+        },
       ],
 
       data: {
-        selectCredit: "-",
+        selectCredit: "",
         selectDate: null,
         sumaLei: null,
         perioadaLuni: null,
@@ -295,6 +517,7 @@ h2 {
   padding: 15px 40px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .date {
@@ -326,5 +549,9 @@ h2 {
   height: 1px;
   background-color: #abaaaa;
   margin-top: 50px;
+}
+.column {
+  display: flex;
+  flex-direction: column;
 }
 </style>
