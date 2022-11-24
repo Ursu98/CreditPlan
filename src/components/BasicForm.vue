@@ -6,7 +6,7 @@
     <div class="tip-credit padding">
       <span> Tipul creditului:</span>
       <select class="width-input" v-model="data.selectCredit">
-        <option v-for="(item, index) in list" :value="item.value"> {{ item.value }}</option>
+        <option v-for="(item) in list" :value="item.value"> {{ item.value }}</option>
       </select>
     </div>
     <div class="date padding">
@@ -16,28 +16,27 @@
     <div class="padding">
       <span> Suma, lei:</span>
       <div class="column">
-      {{ list[data.selectedCardIndex].sum_min }} - {{ list[data.selectedCardIndex].sum_max }} {{ list[data.selectedCardIndex].currency }}
-      <input
-          v-model="list[data.selectedCardIndex]['sum_max']"
-          type="text"
-          class="width-input"
-      >
+        {{ list[data.selectedCardIndex].sum_min }} - {{ list[data.selectedCardIndex].sum_max }}
+        {{ list[data.selectedCardIndex].currency }}
+        <input
+            type="text"
+            class="width-input"
+        >
       </div>
     </div>
     <div class="padding">
       <span> Perioada, luni:</span>
       <select class="width-input">
-        <option>
-          {{ list[data.selectedCardIndex]['duration_max_m'] }}
+        <option v-for="item in list[data.selectedCardIndex]['duration_max_m']">
+          {{ item }}
         </option>
       </select>
     </div>
     <div class="padding">
       <span> Ziua plății:</span>
-      <select class="width-input"
-      >
-        <option>
-          {{ list[data.selectedCardIndex]['pay_day_min'] }}
+      <select class="width-input">
+        <option v-for="item in list[data.selectedCardIndex]['pay_day_max']">
+          {{ item }}
         </option>
       </select>
     </div>
@@ -67,18 +66,12 @@
       <th>Dobânda</th>
       <th>Plata lunară</th>
     </tr>
-    <tr class="template">
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
+
+    <tr v-for="item in list[data.selectedCardIndex]['duration_max_m']">
+      <th>{{ item }}</th>
+    </tr>
+    <tr>
+      <th></th>
     </tr>
   </table>
 
@@ -105,10 +98,10 @@
 <script lang="ts">
 import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
-import { defineComponent } from "vue";
+import {defineComponent} from "vue";
 
 
-export default defineComponent( {
+export default defineComponent({
   components: {
     Datepicker
   },
@@ -529,10 +522,7 @@ export default defineComponent( {
   },
   methods: {
     calcule() {
-      console.log(123)
       this.hidden = !this.hidden;
-      // const table = document.querySelector(".scheme2")
-      // table.classList.toggle("hiden")
     }
   },
   watch: {
@@ -610,17 +600,11 @@ h2 {
   flex-direction: column;
 }
 
-
-
-.hidden {
-  display: none;
-}
-
 table {
   color: #333;
   font-size: 12px;
   width: 800px;
-  border-spacing: 0px;
+  border-spacing: 0;
   border-left: 1px solid #ccc;
   border-bottom: 1px solid #ccc;
   margin-left: 10px;
