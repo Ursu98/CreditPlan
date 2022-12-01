@@ -1,6 +1,6 @@
 <template>
   <form action="" class="form">
-    <div>
+    <div class="form-align">
       <h2>Calculează plata lunară şi costul creditului</h2>
     </div>
     <div class="tip-credit padding">
@@ -87,19 +87,6 @@
     <tbody></tbody>
   </table>
 
-
-  <div id="note-container">
-    <div style="width:300px;">
-      <p class="details-text" style="width:600px;"><span>Costul total al creditului, %:</span><span id="dae"></span>
-      </p>
-    </div>
-    <div>
-      <p class="note">Calculele prezentate sunt valabile până la următoarea modificare a ratei dobânzii şi sunt
-        efectuate din ipoteza că suma totală a creditului este acordată imediat şi în întregime, valoarea totală a
-        creditului se consideră a fi achitată în întregime, conform graficului din contract. În cazul achitării
-        anticipate calculele se vor modifica.</p>
-    </div>
-  </div>
 </template>
 
 <script lang="ts">
@@ -107,8 +94,8 @@ import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 import { defineComponent } from "vue";
 
-
 export default defineComponent( {
+  name: "basic",
   components: {
     Datepicker
   },
@@ -553,17 +540,28 @@ h2 {
   display: flex;
   justify-content: center;
   font-size: 14px;
+  font-weight: 700;
   padding-bottom: 35px;
 }
-
+.line {
+  display: flex;
+  justify-content: center;
+  margin: auto;
+}
 .form {
   color: #244f8e;
-  border: 1px solid #abaaaa;
+  border: 1px solid #d3cdcd;
+  border-radius: 3px;
   width: 37rem;
   height: auto;
   font-size: 12px;
   font-weight: 700;
   padding-top: 15px;
+  background-color: whitesmoke;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin: 100px auto;
 }
 
 .padding {
@@ -592,8 +590,9 @@ h2 {
 .btn {
   border: 1px solid #aaaaaa;
   cursor: pointer;
-  background: -webkit-gradient(linear, 0 0, 0 100%, from(#fff), to(#ccc));
+  background: -webkit-gradient(linear, 0 0, 0 100%, from(#5c76d9), to(#9cb6f1));
   border-radius: 3px;
+  color: white;
   padding: 6px 0;
   width: 163px;
 }
