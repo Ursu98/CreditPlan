@@ -52,48 +52,50 @@
   </form>
   <div class="line"></div>
   <!--  ----------------------------------------------------------------------------------->
-  <table v-if="hidden" class="scheme2">
-    <tr>
-      <th>Luna</th>
-      <th>Data</th>
-      <th>Sold credit</th>
-      <th>Rata lunară</th>
-      <th>Creditul rambursat</th>
-      <th>Credit rămas</th>
-      <th>Comision de examinare</th>
-      <th>Comision de acordare</th>
-      <th>Comision de administrare</th>
-      <th>Dobânda</th>
-      <th>Plata lunară</th>
-    </tr>
-
-    <tr v-for="item in list[data.selectedCardIndex]['duration_max_m']">
-      <th>{{ item }}</th>
-    </tr>
-    <tr>
-      <th></th>
-    </tr>
-  </table>
-
-
-  <table class="scheme2-full">
-    <tbody></tbody>
-  </table>
+  <h3>Import/Export in Excel file</h3>
+  <input type="file" @change="subirExcel"/>
+  <div v-if="!!items.length" class="excel">
+    <div class="alignCenterRow">
+      <template v-for="item in head">
+        <div class="box">{{ item }}</div>
+      </template>
+    </div>
+    <div class="alignCenterColumn">
+      <template v-for="item in items">
+        <div class="alignCenterRow">
+          <div class="box" v-for="el in item">{{ el }}</div>
+        </div>
+      </template>
+    </div>
+  </div>
+  <button @click="onBtnExport" v-if="!!items.length" type="button">Export Csv</button>
 
 </template>
 
 <script lang="ts">
-import Datepicker from "@vuepic/vue-datepicker";
-import "@vuepic/vue-datepicker/dist/main.css";
 import {defineComponent} from "vue";
+import readXlsxFile from "read-excel-file";
 
-export default defineComponent( {
+
+export default defineComponent({
   name: "basic",
-  components: {
-    Datepicker
-  },
   data() {
     return {
+      file: null,
+      items: [],
+      head: [
+        "Luna",
+        "Data",
+        "Sold Credit",
+        "Suma creditului acordat",
+        "Rata lunară ",
+        "Credit rămas",
+        "Comision examinare",
+        "Comision acordare",
+        "Comision administrare",
+        "Dobânda",
+        "Plata lunară",
+      ],
       hidden: false,
       list: [
         {value: "-"},
@@ -510,8 +512,36 @@ export default defineComponent( {
   methods: {
     calcule() {
       this.hidden = !this.hidden;
-    }
+    },
+    subirExcel(event: any) {
+
+      readXlsxFile(event.target.files[0]).then((rows) => {
+        this.items = JSON.parse(JSON.stringify(rows));
+        console.log(this.file)
+        console.log(333, rows);
+
+      });
+    },
+    onBtnExport() {
+      let myTarget = JSON.parse(JSON.stringify(this.items))
+      myTarget.unshift(this.head)
+      let CsvString = "";
+      myTarget.forEach(function (RowItem: [], RowIndex: number) {
+        RowItem.forEach(function (ColItem: number, ColIndex: number) {
+          CsvString += ColItem + ',';
+        });
+        CsvString += "\r\n";
+      });
+      CsvString = "data:application/csv," + encodeURIComponent(CsvString);
+      const link = document.createElement("a");
+      link.setAttribute("href", CsvString);
+      link.setAttribute("download", "somedata.csv");
+      document.body.appendChild(link);
+      link.click();
+
+    },
   },
+
   watch: {
     data: {
       handler(newValue: any) {
@@ -526,6 +556,30 @@ export default defineComponent( {
 })
 </script>
 <style scoped>
+.alignCenterRow {
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+}
+
+.alignCenterColumn {
+  display: flex;
+  flex-direction: column;
+}
+
+.excel {
+  margin-top: 10px;
+  padding: 10px;
+  display: flex;
+  justify-content: flex-start;
+  /*align-items: center;*/
+  flex-direction: column;
+}
+
+.box {
+  width: 100px;
+  border: 1px solid black;
+}
 h2 {
   display: flex;
   justify-content: center;
