@@ -13,6 +13,7 @@
     <div class="form-group">
       <label>Email</label>
       <input type="email" class="form-control" v-model="email" placeholder="Email" />
+       <p v-if="superEmail" style="color: red; margin-bottom: 0px" >The email is already in use</p>
     </div>
 
     <div class="form-group">
@@ -39,6 +40,7 @@ export default {
       email: '',
       password: '',
       password_confirm: '',
+      superEmail: false
     }
   },
   methods: {
@@ -50,11 +52,17 @@ export default {
         password: this.password,
         password_confirm: this.password_confirm
       };
-      let users = window.localStorage.getItem('acc');
-      if (!users) {
+      let users = JSON.parse(window.localStorage.getItem('value'));
+      let email = false
+      const isUser = users.filter(item => {
+        return item.email === this.email
+      })
+      if (isUser.length > 0) {
+        this.superEmail = true
         users = [];
       } else {
-        users = JSON.parse(users);
+
+        // users = JSON.parse(users);
         this.$router.push('/login');
 
       }

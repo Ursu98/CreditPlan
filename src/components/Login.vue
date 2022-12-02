@@ -24,19 +24,22 @@ export default {
   },
   methods: {
     handleSubmit() {
-      const user_log = {
-        email: this.email,
-        password: this.password,
-      }
-      let users = window.localStorage.getItem('acc');
-      if (!users) {
-        this.$router.push('/register');
-        console.log('nui user')
+      // const user_log = {
+      //   email: this.email,
+      //   password: this.password,
+      // }
+      let users = JSON.parse(window.localStorage.getItem('value'));
+      console.log(users[0])
+     const isUser = users.filter(item => {
+       return item.email === this.email && item.password === this.password
+     })
+      console.log(isUser.length > 0)
+      if (isUser.length > 0) {
+        this.$router.push('/basic');
+        console.log('succes')
         // redirect la register
-      } else if (users){
-        this.$router.push({path: '/basic'});
-        users = JSON.parse(users);
-        console.log('este user', user_log)
+      } else {
+        this.$router.push('/register');
         // redirect la home
       }
       // console.log('if', users)
