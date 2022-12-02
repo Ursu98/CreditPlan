@@ -14,11 +14,13 @@
     "axios": "^1.2.0",
     "bootstrap": "^5.2.2",
     "bootstrap-vue": "^2.23.1",
+    "read-excel-file": "^5.5.3",
     "vue": "^3.2.45",
     "vue-date-pick": "^1.5.1",
     "vue-excel-xlsx": "^1.0.3",
     "vue-router": "^4.1.6",
-    "vue3-excel-editor": "^1.0.17"
+    "vue3-excel-editor": "^1.0.17",
+    "vue3-table-lite": "^1.2.7"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.1.4",
