@@ -535,7 +535,7 @@ export default defineComponent({
       CsvString = "data:application/csv," + encodeURIComponent(CsvString);
       const link = document.createElement("a");
       link.setAttribute("href", CsvString);
-      link.setAttribute("download", "somedata.csv");
+      link.setAttribute("download", "CreditPlan.xls");
       document.body.appendChild(link);
       link.click();
 
