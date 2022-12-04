@@ -61,8 +61,6 @@ export default {
         this.superEmail = true
         users = [];
       } else {
-
-        // users = JSON.parse(users);
         this.$router.push('/login');
 
       }
