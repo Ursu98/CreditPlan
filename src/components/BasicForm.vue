@@ -80,6 +80,7 @@
 <script lang="ts">
 import {defineComponent} from "vue";
 import readXlsxFile from "read-excel-file";
+import moment from 'moment';
 
 
 export default defineComponent({
@@ -527,11 +528,12 @@ export default defineComponent({
     getDate(e: any): void {
       console.log('getDate', e.target.value, this.data);
     },
-    newMonth () {
-      const d = new Date(this.data.dataPrimirii);
-      d.setMonth(d.getMonth() + 1);
-      return d;
-      console.log(d);
+
+    newMonth (value: number) {
+      const startDate = this.data.dataPrimirii;
+      let newDate = moment(startDate, "YYYY-MM-DD").add(value, 'month');
+      console.log(moment(newDate).format("YYYY-MM-DD"))
+      return moment(newDate).format("YYYY-MM-DD")
     },
 
     formValid(): boolean {
@@ -577,7 +579,7 @@ export default defineComponent({
       } else {
         const a = this.items[index - 1];
         sold = (a[2] - a[4]).toFixed(2);
-        day = this.newMonth()
+        day = this.newMonth(index);
       }
       sum  = this.data.sumaLei;
       rate = (monthlyRate * sold).toFixed(2);
