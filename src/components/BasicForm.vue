@@ -57,9 +57,9 @@
   </form>
   <div class="line"></div>
   <!--  ----------------------------------------------------------------------------------->
-  <h3>Import/Export in Excel file</h3>
-  <input type="file" @change="subirExcel"/>
-  <div v-if="!!items.length || hidden"  class="excel">
+  <h3 v-if="users">Import Excel</h3>
+  <input v-if="users" type="file" @change="subirExcel"/>
+  <div v-if="!!items.length"  class="excel">
     <div class="alignCenterRow">
       <template v-for="item in head">
         <div class="box">{{ item }}</div>
@@ -73,7 +73,7 @@
       </template>
     </div>
   </div>
-  <button @click="onBtnExport" v-if="!!items.length" type="button">Export XLSX</button>
+  <button @click="onBtnExport" v-if="!!items.length && users " type="button">Export Excel</button>
 
 </template>
 
@@ -90,6 +90,7 @@ export default defineComponent({
       hidden : false,
       file: null,
       items: [],
+      users: JSON.parse(window.localStorage.getItem('value')),
       head: [
         "Luna",
         "Data",
@@ -621,17 +622,7 @@ export default defineComponent({
       XLSX.writeFile(wb, "CreditPlan.xlsx");
 
     },
-  //   watch: {
-  //   data: {
-  //     handler(newValue: any) {
-  //       console.log(123, JSON.parse(JSON.stringify(newValue)));
-  //       console.log('zashel brat', newValue.selectCredit);
-  //       this.data.selectedCardIndex = this.list.findIndex((item: any) =>
-  //           item.value === JSON.parse(JSON.stringify(newValue.selectCredit)))
-  //     },
-  //     deep: true
-  //   },
-  // },
+
 }});
 </script>
 <style scoped>
