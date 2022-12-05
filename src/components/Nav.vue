@@ -10,7 +10,6 @@
           <li class="nav-item">
             <router-link to="/register" class="nav-link navcolor">Sign up</router-link>
           </li>
-
         </ul>
       </div>
     </div>
