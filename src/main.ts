@@ -4,6 +4,9 @@ import router from "./router";
 import Datepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 import "./assets/main.css";
+import moment from 'moment'
+
+
 
 // createApp(App).mount("#app");
 

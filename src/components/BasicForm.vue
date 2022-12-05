@@ -5,103 +5,105 @@
     </div>
     <div class="tip-credit padding">
       <span> Tipul creditului:</span>
-      <select class="width-input" v-model="data.selectCredit">
-        <option v-for="(item, index) in list" :value="item.value"> {{ item.value }}</option>
+      <select class="width-input" v-model="data.selectCredit" @change="tipulCreditului">
+        <option v-for="(item) in list" :value="item.value"> {{ item.value }}
+        </option>
       </select>
     </div>
     <div class="date padding">
-      <span>Data primirei creditului</span>
-      <input type="date" class=" width-input">
+      <span>Data primirii creditului</span>
+      <input type="date" class=" width-input" @change="getDate" v-model="data.dataPrimirii">
     </div>
     <div class="padding">
       <span> Suma, lei:</span>
       <div class="column">
-      {{ list[data.selectedCardIndex].sum_min }} - {{ list[data.selectedCardIndex].sum_max }} {{ list[data.selectedCardIndex].currency }}
-      <input
-          v-model="list[data.selectedCardIndex]['sum_max']"
-          type="text"
-          class="width-input"
-      >
+        {{ list[data.selectedCardIndex].sum_min }} -
+        {{ list[data.selectedCardIndex].sum_max }}
+        {{ list[data.selectedCardIndex].currency }}
+        <input
+            type="text"
+            class="width-input"
+            v-model.number="data.sumaLei"
+            :max="this.data.sum_max"
+            :min="this.data.sum_min"
+        />
       </div>
     </div>
     <div class="padding">
       <span> Perioada, luni:</span>
-      <select class="width-input">
-        <option>
-          {{ list[data.selectedCardIndex]['duration_max_m'] }}
+      <select class="width-input" v-model="data.perioadaLuni">
+        <option v-for="item in list[data.selectedCardIndex]['duration_max_m']">
+          {{ item }}
         </option>
       </select>
     </div>
     <div class="padding">
       <span> Ziua plății:</span>
-      <select class="width-input"
-      >
-        <option>
-          {{ list[data.selectedCardIndex]['pay_day_min'] }}
+      <select class="width-input" v-model="data.ziuaPlatii">
+        <option v-for="item in list[data.selectedCardIndex]['pay_day_max']">
+          {{ item }}
         </option>
       </select>
     </div>
     <div class="padding">
       <span> Rata anuală a dobânzii, % </span>
       <span class="procentaj">
-        {{ list[data.selectedCardIndex]['rate_p'] }} %
+        {{ data.rataAnuala }}
       </span>
     </div>
     <div class="btn-div">
-      <button class="btn" type="button" @click="calcule">Calculează</button>
+      <button class="btn" type="button" @click="getData()">Calculează</button>
     </div>
   </form>
   <div class="line"></div>
   <!--  ----------------------------------------------------------------------------------->
-  <table v-if="hidden" class="scheme2">
-    <tr>
-      <th>Luna</th>
-      <th>Data</th>
-      <th>Sold credit</th>
-      <th>Rata lunară</th>
-      <th>Creditul rambursat</th>
-      <th>Credit rămas</th>
-      <th>Comision de examinare</th>
-      <th>Comision de acordare</th>
-      <th>Comision de administrare</th>
-      <th>Dobânda</th>
-      <th>Plata lunară</th>
-    </tr>
-    <tr class="template">
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-    </tr>
-  </table>
-
-
-  <table class="scheme2-full">
-    <tbody></tbody>
-  </table>
+  <h3>Import/Export in Excel file</h3>
+  <input type="file" @change="subirExcel"/>
+  <div v-if="!!items.length || hidden"  class="excel">
+    <div class="alignCenterRow">
+      <template v-for="item in head">
+        <div class="box">{{ item }}</div>
+      </template>
+    </div>
+    <div class="alignCenterColumn">
+      <template v-for="item in items">
+        <div class="alignCenterRow">
+          <div class="box" v-for="el in item">{{ el }}</div>
+        </div>
+      </template>
+    </div>
+  </div>
+  <button @click="onBtnExport" v-if="!!items.length" type="button">Export XLSX</button>
 
 </template>
 
 <script lang="ts">
-import Datepicker from "@vuepic/vue-datepicker";
-import "@vuepic/vue-datepicker/dist/main.css";
-import { defineComponent } from "vue";
+import {defineComponent} from "vue";
+import readXlsxFile from "read-excel-file";
+import moment from 'moment';
 
-export default defineComponent( {
+
+export default defineComponent({
   name: "basic",
-  components: {
-    Datepicker
-  },
   data() {
     return {
-      hidden: false,
+      hidden : false,
+      file: null,
+      items: [],
+      head: [
+        "Luna",
+        "Data",
+        "Sold Credit",
+        "Suma creditului acordat",
+        "Rata lunară ",
+        "Credit rămas",
+        "Comision examinare",
+        "Comision acordare",
+        "Comision administrare",
+        "Dobânda",
+        "Plata lunară",
+      ],
+      // hidden: false,
       list: [
         {value: "-"},
         {
@@ -511,31 +513,152 @@ export default defineComponent( {
         perioadaLuni: null,
         ziuaPlatii: null,
         selectedCardIndex: 0,
+        sumMax: 0,
+        sumMin: 0,
+        plataLunara: 0,
+        rataAnuala: 0,
+        dataPrimirii: 0,
       },
     };
   },
   methods: {
-    calcule() {
-      console.log(123)
-      this.hidden = !this.hidden;
-      // const table = document.querySelector(".scheme2")
-      // table.classList.toggle("hiden")
-    }
-  },
-  watch: {
-    data: {
-      handler(newValue: any) {
-        console.log(123, JSON.parse(JSON.stringify(newValue)));
-        console.log('zashel brat', newValue.selectCredit);
-        this.data.selectedCardIndex = this.list.findIndex((item: any) =>
-            item.value === JSON.parse(JSON.stringify(newValue.selectCredit)))
-      },
-      deep: true
+    // calcule() {
+    //   this.hidden = !this.hidden;
+    // },
+    getDate(e: any): void {
+      console.log('getDate', e.target.value, this.data);
     },
-  },
-})
+
+    newMonth (value: number) {
+      const startDate = this.data.dataPrimirii;
+      let newDate = moment(startDate, "YYYY-MM-DD").add(value, 'month');
+      console.log(moment(newDate).format("YYYY-MM-DD"))
+      return moment(newDate).format("YYYY-MM-DD")
+    },
+
+    formValid(): boolean {
+      const {sumaLei, perioadaLuni} = this.data;
+      return (
+          +sumaLei >= 0 &&
+          +sumaLei >= this.data.sumaMin &&
+          +sumaLei <= this.data.sumaMax &&
+          +perioadaLuni > 0
+
+      );
+    },
+    getData(): void {
+      this.items = [];
+      const a = new Array(5);
+      a.forEach((el) => {
+        console.log("555", {el});
+      })
+      this.formValid()
+      console.log("123am intrat", this.formValid())
+      if (!this.formValid()) return;
+      let {sumaLei, rataLunara, perioadaLuni, dobanda, plataLunara, rataAnuala, ziuaPlatii, dataPrimirii} =
+          this.data;
+      console.log(sumaLei, rataLunara, perioadaLuni, dobanda, plataLunara, ziuaPlatii, dataPrimirii);
+      rataLunara = (rataAnuala * 100) / (perioadaLuni * sumaLei);
+      this.data.plataLunara = (sumaLei * (1 + rataLunara / 100)) / perioadaLuni;
+      const monthlyPayment = this.data.plataLunara.toFixed(2);
+      const monthlyRate = rataLunara.toFixed(2);
+      const monPay = (sumaLei * (1 + monthlyRate / 100)) / perioadaLuni;
+      const interestRate = (1 + rataAnuala / perioadaLuni) ^ rataAnuala -1;
+      const Luna = this.data.perioadaLuni;
+      for(let i = 0; i < +Luna; i++) {
+        this.creareRand(i, monthlyPayment, monthlyRate);
+      }
+      this.hidden = !this.hidden;
+    },
+    creareRand(index: number, monthlyPayment: any, monthlyRate: any): void {
+      let day, sum, sold, rate, credit, ce, ca, cad, inRate, pLunar, monPay, Luna;
+      if (!index) {
+        sold = this.data.sumaLei;
+        day = this.data.dataPrimirii;
+
+      } else {
+        const a = this.items[index - 1];
+        sold = (a[2] - a[4]).toFixed(2);
+        day = this.newMonth(index);
+      }
+      sum  = this.data.sumaLei;
+      rate = (monthlyRate * sold).toFixed(2);
+      credit = (sold - rate).toFixed(2);
+      ce = 0.00
+      ca = 0.00;
+      cad = 0.00
+      inRate= ((sold * (1 + monthlyRate / 100)) / this.data.perioadaLuni).toFixed(2);
+      pLunar = (+rate + +inRate).toFixed(2)
+      const rand = [index + 1, day, sold, sum, rate, credit, ce, ca, cad, inRate, pLunar]
+      this.items.push(rand)
+    },
+    tipulCreditului() {
+      this.data.selectedCardIndex = this.list.findIndex((item: any) => item.value === this.data.selectCredit);
+      this.data.rataAnuala = this.list[this.data.selectedCardIndex].rate_p;
+      this.data.sumaMax = this.list[this.data.selectedCardIndex].sum_max;
+      this.data.sumaMin = this.list[this.data.selectedCardIndex].sum_min;
+      console.log(444, this.data)
+
+    },
+    subirExcel(event: any) {
+
+      readXlsxFile(event.target.files[0]).then((rows) => {
+        this.items = JSON.parse(JSON.stringify(rows));
+        console.log(this.file)
+        console.log(333, rows);
+
+      });
+    },
+   async onBtnExport() {
+      let myTarget = JSON.parse(JSON.stringify(this.items))
+      // myTarget.unshift(this.head)
+
+      const XLSX = await import("https://cdn.sheetjs.com/xlsx-0.19.1/package/xlsx.mjs");
+
+      const wb = XLSX.utils.book_new();
+      const ws = XLSX.utils.aoa_to_sheet(myTarget);
+      XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+      XLSX.writeFile(wb, "CreditPlan.xlsx");
+
+    },
+  //   watch: {
+  //   data: {
+  //     handler(newValue: any) {
+  //       console.log(123, JSON.parse(JSON.stringify(newValue)));
+  //       console.log('zashel brat', newValue.selectCredit);
+  //       this.data.selectedCardIndex = this.list.findIndex((item: any) =>
+  //           item.value === JSON.parse(JSON.stringify(newValue.selectCredit)))
+  //     },
+  //     deep: true
+  //   },
+  // },
+}});
 </script>
 <style scoped>
+.alignCenterRow {
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+}
+
+.alignCenterColumn {
+  display: flex;
+  flex-direction: column;
+}
+
+.excel {
+  margin-top: 10px;
+  padding: 10px;
+  display: flex;
+  justify-content: flex-start;
+  /*align-items: center;*/
+  flex-direction: column;
+}
+
+.box {
+  width: 100px;
+  border: 1px solid black;
+}
 h2 {
   display: flex;
   justify-content: center;
@@ -609,17 +732,11 @@ h2 {
   flex-direction: column;
 }
 
-
-
-.hidden {
-  display: none;
-}
-
 table {
   color: #333;
   font-size: 12px;
   width: 800px;
-  border-spacing: 0px;
+  border-spacing: 0;
   border-left: 1px solid #ccc;
   border-bottom: 1px solid #ccc;
   margin-left: 10px;

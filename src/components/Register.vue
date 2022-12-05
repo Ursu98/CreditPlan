@@ -70,6 +70,7 @@ export default {
         this.superEmail = true
       }
       else if (user) {
+
         this.$router.push('/login');
       }
       window.localStorage.setItem('value', JSON.stringify([...users, user]));
