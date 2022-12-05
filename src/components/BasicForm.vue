@@ -104,7 +104,6 @@ export default defineComponent({
         "Dobânda",
         "Plata lunară",
       ],
-      // hidden: false,
       list: [
         {value: "-"},
         {
@@ -523,9 +522,6 @@ export default defineComponent({
     };
   },
   methods: {
-    // calcule() {
-    //   this.hidden = !this.hidden;
-    // },
     getDate(e: any): void {
       console.log('getDate', e.target.value, this.data);
     },
@@ -642,7 +638,6 @@ export default defineComponent({
   padding: 10px;
   display: flex;
   justify-content: flex-start;
-  /*align-items: center;*/
   flex-direction: column;
 }
 
@@ -750,20 +745,5 @@ th {
   border-right: 1px solid #ccc;
   padding: 7px;
   border-top: 1px solid #ccc;
-}
-
-.note {
-  margin-top: 20px;
-  color: #777;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 12px;
-  font-size-adjust: none;
-  font-stretch: normal;
-  font-style: normal;
-  font-variant: normal;
-  font-weight: normal;
-  line-height: normal;
-  padding: 1px 1px 1px 2px;
-  width: 500px;
 }
 </style>

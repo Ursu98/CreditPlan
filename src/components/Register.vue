@@ -52,7 +52,6 @@ export default {
         password: this.password,
         password_confirm: this.password_confirm
       };
-
       let users = JSON.parse(window.localStorage.getItem('value')) || [];
       let isUser
       if (users === null) {
@@ -74,11 +73,9 @@ export default {
         this.$router.push('/login');
       }
       window.localStorage.setItem('value', JSON.stringify([...users, user]));
-
     }
   }
 }
-
 </script>
 
 <style scoped>

@@ -24,10 +24,6 @@ export default {
   },
   methods: {
     handleSubmit() {
-      // const user_log = {
-      //   email: this.email,
-      //   password: this.password,
-      // }
       const users = JSON.parse(window.localStorage.getItem('value'));
       console.log(users[0])
      const isUser = users.filter(item => {
@@ -40,16 +36,7 @@ export default {
         // redirect la register
       } else {
         this.$router.push('/register');
-        // redirect la home
       }
-      // console.log('if', users)
-      // window.localStorage.setItem(this.email, this.password);
-      // if (localStorage.getItem(this.email) === null) {
-      //   localStorage.setItem(this.email);
-      // }else {
-      //   console.log("you have an acc")
-      // }
-
     }
   }
 }
@@ -76,12 +63,11 @@ form {
 }
 body {
   background-color: #c2c2c2;
-
 }
 .form-group {
   width: 340px;
-
 }
+
 .btn {
   border: 1px solid #aaaaaa;
   cursor: pointer;
@@ -89,6 +75,5 @@ body {
   border-radius: 3px;
   padding: 6px 0;
   width: 163px;
-
 }
 </style>
