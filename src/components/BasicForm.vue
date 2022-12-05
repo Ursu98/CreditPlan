@@ -68,7 +68,7 @@
       </template>
     </div>
   </div>
-  <button @click="onBtnExport" v-if="!!items.length" type="button">Export Csv</button>
+  <button @click="onBtnExport" v-if="!!items.length" type="button">Export XLSX</button>
 
 </template>
 
@@ -522,22 +522,16 @@ export default defineComponent({
 
       });
     },
-    onBtnExport() {
+   async onBtnExport() {
       let myTarget = JSON.parse(JSON.stringify(this.items))
-      myTarget.unshift(this.head)
-      let CsvString = "";
-      myTarget.forEach(function (RowItem: [], RowIndex: number) {
-        RowItem.forEach(function (ColItem: number, ColIndex: number) {
-          CsvString += ColItem + ',';
-        });
-        CsvString += "\r\n";
-      });
-      CsvString = "data:application/csv," + encodeURIComponent(CsvString);
-      const link = document.createElement("a");
-      link.setAttribute("href", CsvString);
-      link.setAttribute("download", "somedata.csv");
-      document.body.appendChild(link);
-      link.click();
+      // myTarget.unshift(this.head)
+
+      const XLSX = await import("https://cdn.sheetjs.com/xlsx-0.19.1/package/xlsx.mjs");
+
+      const wb = XLSX.utils.book_new();
+      const ws = XLSX.utils.aoa_to_sheet(myTarget);
+      XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+      XLSX.writeFile(wb, "CreditPlan.xlsx");
 
     },
   },
