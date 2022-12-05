@@ -52,22 +52,28 @@ export default {
         password: this.password,
         password_confirm: this.password_confirm
       };
-      let users = JSON.parse(window.localStorage.getItem('value'));
-      let email = false
-      const isUser = users.filter(item => {
-        return item.email === this.email
-      })
+
+      let users = JSON.parse(window.localStorage.getItem('value')) || [];
+      let isUser
+      if (users === null) {
+        isUser = false
+      } else {
+        isUser = users.filter(item => {
+          if (item === null) {
+            isUser = false
+          } else {
+            return item.email === this.email
+          }
+        });
+      }
       if (isUser.length > 0) {
         this.superEmail = true
-        users = [];
-      } else {
-
-        // users = JSON.parse(users);
+      }
+      else if (user) {
         this.$router.push('/login');
-
       }
       window.localStorage.setItem('value', JSON.stringify([...users, user]));
-      console.log(132, JSON.parse(window.localStorage.getItem('value')));
+
     }
   }
 }
