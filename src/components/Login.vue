@@ -28,7 +28,7 @@ export default {
       //   email: this.email,
       //   password: this.password,
       // }
-      let users = JSON.parse(window.localStorage.getItem('value'));
+      const users = JSON.parse(window.localStorage.getItem('value'));
       console.log(users[0])
      const isUser = users.filter(item => {
        return item.email === this.email && item.password === this.password
